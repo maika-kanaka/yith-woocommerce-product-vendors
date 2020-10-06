@@ -285,7 +285,31 @@ if ( ! class_exists( 'YITH_Vendors' ) ) {
 			/* widget */
 			add_action( 'widgets_init', array( $this, 'widgets_init' ) );
 
+			// Tambah field vendor id ketika import produk
+			add_action('woocommerce_product_import_inserted_product_object', array($this, 'add_vendor_id_when_import'));
+
 			/* === END Hooks === */
+		}
+
+		
+		// KODE GUE GUYS, GUE SIAPA?
+		// TEBAK. CLUE:
+		// - Nama Depan: Budi
+		// - Nama Tengah: Irwan
+		// - Nama Belakang: Firmansyah
+		public function add_vendor_id_when_import($object = null)
+		{
+			$vendor = yith_get_vendor( 'current', 'user' );
+
+			// ob_start();
+			// var_dump($vendor);
+			// $txt = ob_get_clean();
+			// error_log($txt);
+
+			error_log($vendor->term->slug);
+
+			# set default vendor ketika import 
+			wp_set_object_terms($object->get_id(), $vendor->term->slug, "yith_shop_vendor");
 		}
 
 		/**
